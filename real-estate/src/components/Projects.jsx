@@ -56,25 +56,46 @@ const prevProject = () => {
 
       {/* project slider container */}
 
-      <div className='overflow-hidden'>
-        <div className='flex justify-center gap-8 transition-transform duration-500 ease-in-out' style={{transform:`translateX(-${(currentIndex * 100) / cardsToShow}%)`}}>
-            {projectsData.map((project, index)=>(
-                <div key={index} className='relative flex-shrink-0 w-full sm:w-1/4'>
-                    <img src={project.image} alt={project.title} className='w-full h-auto mb-14' />
-                    <div className='absolute left-0 right-0 bottom-5 flex justify-center'>
-                        <div className='inline-block bg-white w-3/4 px-4 py-2 shadow-md'>
-                            <h2 className='text-xl font-semibold text-gray-800'>
-                                {project.title}
-                            </h2>
-                            <p className='text-gray-500 text-sm'>
-                                {project.price} <span className='px-1'>|</span> {project.location}
-                            </p>
-                        </div>
-                    </div>
-                </div>
-            ))}
+<div className="overflow-hidden">
+  <div 
+    className="flex transition-transform duration-500 ease-in-out gap-0 sm:gap-8"
+    style={{
+      transform: `translateX(-${currentIndex * 100}%)`,
+    }}
+  >
+    {projectsData.map((project, index) => (
+      <div 
+        key={index} 
+        className="relative flex-shrink-0 w-full sm:w-1/4 flex justify-center items-center"
+      >
+        {/* Image wrapper */}
+        <div className="w-full flex justify-center">
+          <img 
+            src={project.image} 
+            alt={project.title} 
+            className="h-auto mb-14 object-contain max-w-[300px] sm:max-w-full" 
+          />
+        </div>
+
+        {/* Overlay title & price */}
+        <div className="absolute left-0 right-0 bottom-5 flex justify-center">
+          <div className="inline-block bg-white w-3/4 px-4 py-2 shadow-md rounded-lg">
+            <h2 className="text-xl font-semibold text-gray-800 text-center">
+              {project.title}
+            </h2>
+            <p className="text-gray-500 text-sm text-center">
+              {project.price} <span className="px-1">|</span> {project.location}
+            </p>
+          </div>
         </div>
       </div>
+    ))}
+  </div>
+</div>
+
+
+
+
     </motion.div>
   )
 }
