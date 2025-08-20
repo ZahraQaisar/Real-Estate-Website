@@ -4,100 +4,100 @@ import { motion } from 'framer-motion'
 
 const Projects = () => {
 
-const [currentIndex, setcurrentIndex] = useState(0);
-const [cardsToShow, setcardsToShow] = useState(1);
+    const [currentIndex, setcurrentIndex] = useState(0);
+    const [cardsToShow, setcardsToShow] = useState(1);
 
-// setting the value of cards to show depending on the screen
-useEffect(() => {
-// function
-const updateCardsToShow = () => {
-    if(window.innerWidth >= 1024){
-        setcardsToShow(projectsData.length)
-    }else{
-        setcardsToShow(1)
+    // setting the value of cards to show depending on the screen
+    useEffect(() => {
+        // function
+        const updateCardsToShow = () => {
+            if (window.innerWidth >= 1024) {
+                setcardsToShow(projectsData.length)
+            } else {
+                setcardsToShow(1)
+            }
+        };
+        // caling function
+        updateCardsToShow();
+
+        window.addEventListener('resize', updateCardsToShow);
+
+        return () => window.addEventListener('resize', updateCardsToShow);
+    })
+
+    // starting from 1 to end and looping
+    const nextProject = () => {
+        setcurrentIndex((prevIndex) => (prevIndex + 1) % projectsData.length)
     }
-};
-    // caling function
-    updateCardsToShow();
+    const prevProject = () => {
+        setcurrentIndex((prevIndex) => prevIndex === 0 ? projectsData.length - 1 : prevIndex - 1)
+    }
 
-    window.addEventListener('resize', updateCardsToShow);
+    return (
+        <motion.div
+            initial={{ opacity: 0, x: -200 }}
+            transition={{ duration: 1 }}
+            whileInView={{ opacity: 1, x: 0 }}
+            viewport={{ once: true }}
+            className='container mx-auto py-4 pt-20 px-6 md:px-20 lg:px-32 my-20 w-full overflow-hidden' id="Projects">
+            <h1 className='text-2xl sm:text-4xl font-bold mb-2 text-center'>Projects <span className='underline underline-offset-4 decoration-1 under font-light'>Completed</span></h1>
+            <p className='text-center text-gray-500 mb-8 max-w-80 mx-auto'>Crafting Spaces, Building Legacies-Explore Our Portfolio</p>
 
-    return () => window.addEventListener('resize', updateCardsToShow);
-})
+            {/* slider buttons */}
 
-// starting from 1 to end and looping
-const nextProject = () => {
-    setcurrentIndex((prevIndex) => (prevIndex + 1) % projectsData.length)
-}
-const prevProject = () => {
-    setcurrentIndex((prevIndex) => prevIndex === 0 ? projectsData.length - 1 : prevIndex - 1)
-}
+            <div className='flex justify-end items-center mb-8'>
+                <button onClick={prevProject} className='p-3 bg-gray-200 rounded mr-2' aria-label="Previous Project">
+                    <img src={assets.left_arrow} alt="Previous" />
+                </button>
+                <button onClick={nextProject} className='p-3 bg-gray-200 rounded mr-2' aria-label="Next Project">
+                    <img src={assets.right_arrow} alt="Next" />
+                </button>
+            </div>
 
-  return (
-    <motion.div
-    initial={{opacity:0, x:-200}}
-    transition={{duration: 1}}
-    whileInView={{opacity:1, x:0}}
-    viewport={{once:true}}
-    className='container mx-auto py-4 pt-20 px-6 md:px-20 lg:px-32 my-20 w-full overflow-hidden' id="Projects">
-      <h1 className='text-2xl sm:text-4xl font-bold mb-2 text-center'>Projects <span className='underline underline-offset-4 decoration-1 under font-light'>Completed</span></h1>
-      <p className='text-center text-gray-500 mb-8 max-w-80 mx-auto'>Crafting Spaces, Building Legacies-Explore Our Portfolio</p>
+            {/* project slider container */}
 
-      {/* slider buttons */}
+            <div className="overflow-hidden">
+                <div
+                    className="flex transition-transform duration-500 ease-in-out gap-0 sm:gap-8"
+                    style={{
+                        transform: `translateX(-${currentIndex * 100}%)`,
+                    }}
+                >
+                    {projectsData.map((project, index) => (
+                        <div
+                            key={index}
+                            className="relative flex-shrink-0 w-full sm:w-1/4 flex justify-center items-center"
+                        >
+                            {/* Image wrapper */}
+                            <div className="w-full flex justify-center">
+                                <img
+                                    src={project.image}
+                                    alt={project.title}
+                                    className="h-auto mb-14 object-contain max-w-[300px] sm:max-w-full"
+                                />
+                            </div>
 
-      <div className='flex justify-end items-center mb-8'>
-        <button onClick={prevProject} className='p-3 bg-gray-200 rounded mr-2' aria-label="Previous Project">
-            <img src={assets.left_arrow} alt="Previous" />
-        </button>
-        <button onClick={nextProject} className='p-3 bg-gray-200 rounded mr-2' aria-label="Next Project">
-            <img src={assets.right_arrow} alt="Next" />
-        </button>
-      </div>
-
-      {/* project slider container */}
-
-<div className="overflow-hidden">
-  <div 
-    className="flex transition-transform duration-500 ease-in-out gap-0 sm:gap-8"
-    style={{
-      transform: `translateX(-${currentIndex * 100}%)`,
-    }}
-  >
-    {projectsData.map((project, index) => (
-      <div 
-        key={index} 
-        className="relative flex-shrink-0 w-full sm:w-1/4 flex justify-center items-center"
-      >
-        {/* Image wrapper */}
-        <div className="w-full flex justify-center">
-          <img 
-            src={project.image} 
-            alt={project.title} 
-            className="h-auto mb-14 object-contain max-w-[300px] sm:max-w-full" 
-          />
-        </div>
-
-        {/* Overlay title & price */}
-        <div className="absolute left-0 right-0 bottom-5 flex justify-center">
-          <div className="inline-block bg-white w-3/4 px-4 py-2 shadow-md rounded-lg">
-            <h2 className="text-xl font-semibold text-gray-800 text-center">
-              {project.title}
-            </h2>
-            <p className="text-gray-500 text-sm text-center">
-              {project.price} <span className="px-1">|</span> {project.location}
-            </p>
-          </div>
-        </div>
-      </div>
-    ))}
-  </div>
-</div>
+                            {/* Overlay title & price */}
+                            <div className="absolute left-0 right-0 bottom-5 flex justify-center">
+                                <div className="inline-block bg-white w-3/4 px-4 py-2 shadow-md rounded-lg">
+                                    <h2 className="text-xl font-semibold text-gray-800 text-center">
+                                        {project.title}
+                                    </h2>
+                                    <p className="text-gray-500 text-sm text-center">
+                                        {project.price} <span className="px-1">|</span> {project.location}
+                                    </p>
+                                </div>
+                            </div>
+                        </div>
+                    ))}
+                </div>
+            </div>
 
 
 
 
-    </motion.div>
-  )
+        </motion.div>
+    )
 }
 
 export default Projects
